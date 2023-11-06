@@ -3,44 +3,53 @@
 #include <mutex>
 #include <chrono>
 #include <windows.h>
-#include <execution>
-#include <conio.h>
-
+#include <ctime>
 
 std::mutex mtx;
 
+int randomNumber(int min, int max) {
+    srand(time(NULL));
+    return min + rand() % (max - min);
+}
 
-int velocityY = 1;
 int velocityX = 1;
-size_t positionY = 5;
-size_t positionX = 15;
-size_t minX = 0;
+int velocityY = 1;
+size_t Ball_positionX = 16;
+size_t Ball_positionY = 6;
 size_t maxX = 30;
+size_t minX = 0;
+size_t maxY = 9;
 size_t minY = 0;
-size_t maxY = 29;
+size_t Racket0_Ball_positionX = 0;
+size_t Racket0_positionY = 5;
 
+int a = 0;
 
 void printState() {
     while (true) {
         mtx.lock();
         system("cls");
-        for (size_t i = minX; i < 10; ++i) {
-            for (size_t j = minY; j < maxY; ++j) {
-                if (i == positionY && j == positionX) {
+        for (size_t i = 0; i < 10; ++i) {
+            for (size_t j = 0; j < 30; ++j) {
+                if (i == Ball_positionY && j == Ball_positionX) {
                     std::cout << "0";
+                }
+                else if (i == Racket0_positionY && j == Racket0_Ball_positionX) {
+                    std::cout << "|";
                 }
                 else {
                     std::cout << "#";
                 }
+                
             }
             std::cout << std::endl;
         }
-        positionY += velocityY;
-        positionY = (std::min)(positionY, maxY);
-        positionY = (std::max)(positionY, minY);
-        positionX += velocityX;
-        positionX = (std::min)(positionX, maxX);
-        positionX = (std::max)(positionX, minX);
+        Ball_positionY += velocityY;
+        Ball_positionY = (std::min)(Ball_positionY, maxY);
+        Ball_positionY = (std::max)(Ball_positionY, minY);
+        Ball_positionX += velocityX;
+        Ball_positionX = (std::min)(Ball_positionX, maxX);
+        Ball_positionX = (std::max)(Ball_positionX, minX);
         mtx.unlock();
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(1000ms);
@@ -53,21 +62,27 @@ void printState() {
 void getState() {
     while (true) {
         mtx.lock();
-        if (positionY==9) {
+        if (Ball_positionY == 9) {
             velocityY = -1;
         }
-        else if (positionY==0) {
+        else if (Ball_positionY == 0) {
             velocityY = 1;
         }
-        if (positionX==28) {
+        if (Ball_positionX == 28) {
             velocityX = -1;
         }
-        else if (positionX==0){
+        else if (Ball_positionX == 0) {
             velocityX = 1;
+        }
+        if (GetAsyncKeyState(VK_UP) && Racket0_positionY!= 0) {
+            Racket0_positionY--;
+        }
+        else if (GetAsyncKeyState(VK_DOWN) && Racket0_positionY != 9) {
+            Racket0_positionY++;
         }
         mtx.unlock();
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(1000ms);
+        std::this_thread::sleep_for(100ms);
     }
 }
 
