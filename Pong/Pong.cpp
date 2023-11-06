@@ -56,7 +56,7 @@ void printState() {
         Ball_positionX = (std::max)(Ball_positionX, minX);
         mtx.unlock();
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(500ms);
+        std::this_thread::sleep_for(300ms);
 
     }
 }
@@ -68,6 +68,14 @@ void getState() {
         mtx.lock();
         if (Ball_positionY == Racket0_positionY && Ball_positionX - 1 == 0) {
             velocityX = 1;
+        }
+        else if (Ball_positionY - 1 == Racket0_positionY && Ball_positionX - 1 == 0) {
+            velocityX = 1;
+            velocityY = 1;
+        }
+        else if (Ball_positionY + 1 == Racket0_positionY && Ball_positionX - 1 == 0) {
+            velocityX = 1;
+            velocityY = -1;
         }
         if (Ball_positionY == 9) {
             velocityY = -1;
@@ -91,7 +99,7 @@ void getState() {
         }
         mtx.unlock();
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(500ms);
+        std::this_thread::sleep_for(300ms);
     }
 }
 
