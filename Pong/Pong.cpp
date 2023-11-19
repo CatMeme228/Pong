@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include <thread>
 #include <mutex>
 #include <chrono>
 #include <windows.h>
@@ -13,9 +12,9 @@ int velocityY = 1;
 size_t Ball_positionX = 16;
 size_t Ball_positionY = 6;
 
-size_t maxX = 30;
+size_t maxX = 31;
 size_t minX = 0;
-size_t maxY = 9;
+size_t maxY = 10;
 size_t minY = 0;
 
 size_t Racket0_positionX = 0;
@@ -32,8 +31,8 @@ void printState() {
     while (true) {
         mtx.lock();
         system("cls");
-        for (size_t i = 0; i < 10; ++i) {
-            for (size_t j = 0; j < 31; ++j) {
+        for (size_t i = 0; i < maxY; ++i) {
+            for (size_t j = 0; j < maxX; ++j) {
                 if (i == Ball_positionY && j == Ball_positionX) {
                     std::cout << "0";
                 }
