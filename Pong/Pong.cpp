@@ -74,6 +74,7 @@ void getState() {
         //Racket 0
         if (Ball_positionY == Racket0_positionY && Ball_positionX - 1 == 0) {
             velocityX = 1;
+
         }
         else if (Ball_positionY - 1 == Racket0_positionY && Ball_positionX - 1 == 0) {
             velocityX = 1;
@@ -108,10 +109,12 @@ void getState() {
         //Score
         if (Ball_positionX == 30) {
             velocityX = -1;
+            Ball_positionX = 29;
             FirstPlayerScore++;
         }
         else if (Ball_positionX == 0) {
             velocityX = 1;
+            Ball_positionX = 1;
             SecondPlayerScore++;
         }
 
